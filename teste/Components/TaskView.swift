@@ -14,10 +14,10 @@ struct TaskView: View {
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             Button {
-                // task.iscompleted.toggle() // habilite quando o binding estiver sendo passado corretamente
+                 task.iscompleted.toggle() // habilite quando o binding estiver sendo passado corretamente
             } label: {
                 Image(systemName: task.iscompleted ? "checkmark.circle.fill" : "checkmark.circle")
-                    .foregroundStyle(task.iscompleted ? accent: gray3)
+                    .foregroundStyle(task.iscompleted ? .accent: .gray3)
                     .frame(width: 22, height: 22)
             }
             Text(task.name)

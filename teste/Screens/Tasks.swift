@@ -8,55 +8,52 @@
 import SwiftUI
 
 struct Tasks: View {
-    
+    @State
     var tasks: [Task] = [
-        Task(name: "ryr", details: "dlld", category:.study, iscompleted: false)
-        ]
+        Task(name: "ryr", details: "dlld", category: .study, iscompleted: false)
+    ]
     
-    var groupedTasks: [TaskCategory: [Task]] {
-            Dictionary(grouping: tasks, by: { $0.category })
-        }
-
-        var sortedCategories: [TaskCategory] {
-            groupedTasks.keys.sorted(by: { $0.rawValue < $1.rawValue })
-        }
-
-    
-    
-    var body: some View {
-        
-        
-        if tasks.isEmpty {
-                    EmptyStateView()
-                } else {
-
-                    List(sortedCategories) { category in
-
-                                    // header
-                                    HeaderView(taskCategory: category)
-                        padding(.top, 20)
-
-                                        if let categoryTasks = groupedTasks[category] {
-
-                                            ForEach(categoryTasks) { task in
-                                                TaskView(task: task)
-                                                    .listRowInsets(EdgeInsets())
-                                                    .listRowSeparator(task.id == categoryTasks.last!.id ? .hidden : .visible, edges: .bottom)
-                                            }
-                                        }
-                                    }
-                                    .listStyle(.plain)
-                                }
-        }
-        
-        
-        
-        
-        
+    var groupedTasks: [TaskCategory: [Binding<Task>]] {
+        Dictionary(grouping: $tasks, by: { $0.category.wrappedValue })
     }
     
+    // Sorting categories by rawValue
+    var sortedCategories: [TaskCategory] {
+        groupedTasks.keys.sorted(by: { $0.rawValue < $1.rawValue })
+    }
+    
+    var body: some View {
+        if tasks.isEmpty {
+            EmptyStateView()
+        } else {
+            List(sortedCategories) { category in
+                
+                // Category Header
+                HeaderView(taskCategory: category)
+                    .listRowInsets(EdgeInsets())
+                    .padding(.top, 20)
+                
+                if let categoryTasks = groupedTasks[category] {
+                    ForEach(categoryTasks) { task in
+                        TaskView(task: task)
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(
+                                task.id == categoryTasks.last?.id ? .hidden : .visible,
+                                edges: .bottom
+                            )
+                    }
+                }
+            }
+            .listStyle(.plain)
+            .padding(.horizontal,10)
+            
+        }
+    }
+}
+
 
 
 #Preview {
-    Task(name: "ryr", details: "dlld", category:.study, iscompleted: false)
+    Tasks()  // Previewing the view, not a single Task model
 }
+
