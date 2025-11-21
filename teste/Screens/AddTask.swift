@@ -11,6 +11,9 @@ struct AddTask: View {
     
     @Environment(\.dismiss) var dismiss
     @State var name: String = ""
+    @State var details: String = ""
+    @State var category: TaskCategory? = nil
+    @State var informations:Bool = false
     
     var body: some View {
         NavigationStack {
@@ -30,11 +33,51 @@ struct AddTask: View {
                                     .foregroundStyle(.backgroundTertiary)
                             )
                     }
+                    // categoria
+                    HStack (spacing:12){
+                        Image(systemName:category?.nameImage ?? "list.bullet")
+                            .foregroundStyle(.white)
+                            .frame(width: 30, height: 30)
+                            .background(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .foregroundStyle(.accent)
+                            )
+                        Text("Category")
+                            .padding(.vertical,11)
+                        Spacer()
+                        
+                        Menu{
+                            
+                            ForEach(TaskCategory.allCases){
+                                category in
+                                Button(category.rawValue,systemImage:category.nameImage){
+                                    self.category = category
+                                }
+                            }
+                            
+                            
+                        }label:{
+                            HStack{
+                                Text("select")
+                                Image(systemName:"chevron.up.chevron.down")
+                            }
+                            
+                            
+                        }
+                        
+                        
+                    }
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 26)
+                            .foregroundStyle(.backgroundTertiary)
+                    )
+                    
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Description")
                             .font(.system(.subheadline, weight: .semibold))
                             .padding(.horizontal)
-                        TextField("More details about the task", text: $name, axis: .vertical)
+                        TextField("More details about the task", text: $details, axis: .vertical)
                             .lineLimit(5...10)
                             .padding(.horizontal)
                             .padding(.vertical, 12)
@@ -50,6 +93,9 @@ struct AddTask: View {
             .background(.backgroundSecondary)
             .navigationTitle(Text("Add Task"))
             .navigationBarTitleDisplayMode(.inline)
+            .alert("missing infos", isPresented: $informations, actions: {
+                Button("Cancel", role: .cancel) { }
+            })
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel", systemImage: "xmark") {
@@ -59,6 +105,12 @@ struct AddTask: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add", systemImage: "paperplane") {
                         // Add action here
+                        
+                        if let category, !name.isEmpty, !details.isEmpty {
+                            // TODO: handle adding the task and dismiss if needed
+                        } else {
+                            informations = true
+                        }
                     }
                     .buttonStyle(.borderedProminent)
                 }
