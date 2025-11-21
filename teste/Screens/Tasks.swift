@@ -10,7 +10,9 @@ import SwiftUI
 struct Tasks: View {
     @State
     var tasks: [Task] = [
-        Task(name: "ryr", details: "dlld", category: .study, iscompleted: false)
+        Task(name: "ryr", details: "dlld", category: .study, iscompleted: false),
+        Task (name: "ryr3", details: "dlld3", category: .study, iscompleted: true),
+        Task(name: "ryr2", details: "dlld2", category: .work, iscompleted: false),
     ]
     
     var groupedTasks: [TaskCategory: [Binding<Task>]] {

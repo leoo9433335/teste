@@ -16,7 +16,7 @@ struct TaskView: View {
             Button {
                  task.iscompleted.toggle() // habilite quando o binding estiver sendo passado corretamente
             } label: {
-                Image(systemName: task.iscompleted ? "checkmark.circle.fill" : "checkmark.circle")
+                Image(systemName: task.iscompleted ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(task.iscompleted ? .accent: .gray3)
                     .frame(width: 22, height: 22)
             }
