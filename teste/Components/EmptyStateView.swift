@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct EmptyStateView: View {
+    @Binding var AddTask: Bool
     var body: some View {
         VStack(spacing: 32) {
             VStack(spacing: 16) {
@@ -37,5 +38,5 @@ struct EmptyStateView: View {
 }
 
 #Preview {
-    EmptyStateView()
+    EmptyStateView(AddTask: .constant(false))
 }
