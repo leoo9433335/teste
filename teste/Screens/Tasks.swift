@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct Tasks: View {
-    @State
-    var tasks: [Task] = [
-        Task(name: "ryr", details: "dlld", category: .study, iscompleted: false),
-        Task (name: "ryr3", details: "dlld3", category: .study, iscompleted: true),
-        Task(name: "ryr2", details: "dlld2", category: .work, iscompleted: false),
-    ]
+    
+    
+    @Environment(\.modelContext) var modelContext
+    
+    @Query var tasks: [Task]
     
     
     @State var addTask:Bool = false
@@ -22,8 +22,8 @@ struct Tasks: View {
     
     
     
-    var groupedTasks: [TaskCategory: [Binding<Task>]] {
-        Dictionary(grouping: $tasks, by: { $0.category.wrappedValue })
+    var groupedTasks: [TaskCategory: [Task]] {
+        Dictionary(grouping: tasks, by: { $0.category })
     }
     
     // Sorting categories by rawValue
@@ -55,6 +55,13 @@ struct Tasks: View {
                                         task.id == categoryTasks.last?.id ? .hidden : .visible,
                                         edges: .bottom
                                     )
+                                    .swipeActions(edge: .trailing){
+                                        Button("Delete",systemImage: "trash",role: .destructive){
+                                            modelContext.delete(task)
+                                            try? modelContext.save()
+                                            
+                                        }
+                                    }
                             }
                         }
                     }

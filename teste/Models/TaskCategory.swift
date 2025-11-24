@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TaskCategory: String,CaseIterable, Identifiable {
+enum TaskCategory: String, Identifiable, CaseIterable, Codable {
     var id: String { rawValue }
     
     case work = "Work"
@@ -19,13 +19,13 @@ enum TaskCategory: String,CaseIterable, Identifiable {
     var nameImage : String {
         switch  self {
         case .work:
-            return "graduationcap.fill"
+            return "pills.fill"
         case .personal:
-            return "👨‍👩‍👧‍👦"
+            return "person.fill"
         case .family:
-            return "👨‍👩‍👧‍👦"
+            return "house.fill"
         case .study:
-            return ""
+            return "graduationcap.fill"
         }
         
         
