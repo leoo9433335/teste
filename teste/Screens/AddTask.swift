@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddTask: View {
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
     @State var name: String = ""
     @State var details: String = ""
     @State var category: TaskCategory? = nil
@@ -50,7 +52,7 @@ struct AddTask: View {
                             
                             ForEach(TaskCategory.allCases){
                                 category in
-                                Button(category.rawValue,systemImage:category.nameImage){
+                                Button(category.rawValue, systemImage:category.nameImage){
                                     self.category = category
                                 }
                             }
@@ -107,6 +109,17 @@ struct AddTask: View {
                         // Add action here
                         
                         if let category, !name.isEmpty, !details.isEmpty {
+                            
+                            let newtask = Task( name: name, details: details, category: category, iscompleted: false)
+                            
+                            modelContext.insert(newtask)
+                            try? modelContext.save()
+                            
+                            dismiss()
+                            
+                            
+            
+                            
                             // TODO: handle adding the task and dismiss if needed
                         } else {
                             informations = true

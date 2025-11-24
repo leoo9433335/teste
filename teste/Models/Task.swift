@@ -7,14 +7,22 @@
 
 
 import Foundation
+import SwiftData
 
-struct Task: Identifiable {
+@Model
+class Task: Identifiable {
     var id: UUID = UUID()
     var name: String
     var details: String
     var category: TaskCategory
     var iscompleted: Bool 
     
-    
+    init( name: String, details: String, category: TaskCategory, iscompleted: Bool) {
+
+        self.name = name
+        self.details = details
+        self.category = category
+        self.iscompleted = iscompleted
+    }
     
 }
